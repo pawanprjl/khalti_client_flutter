@@ -1,15 +1,29 @@
 # khalti_client
 
-A plugin for implementing khalti client api in flutter.
+A plugin for implementing khalti client api in flutter. This plugin is currently only supported for android.
 
-## Getting Started
+# How to use
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+```
+KhaltiClient _khaltiClient = KhaltiClient.configure(
+  publicKey: "test_public_key_8a153ab792a64d3a88a1425209eecbf1",
+  paymentPreferences: [KhaltiPaymentPreference.KHALTI],
+);
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+KhaltiProduct product = KhaltiProduct(
+  id: "test",
+  name: "Test Product",
+  amount: 1000,
+);
+
+_khaltiClient.startPayment(
+  product: product,
+  onSuccess: (data) {
+    print("success");
+  },
+  onFailure: (data) {
+    print("failure");
+  },
+);
+```
 

@@ -8,6 +8,8 @@ import com.khalti.checkout.helper.OnCheckOutListener
 import com.khalti.checkout.helper.PaymentPreference
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -15,18 +17,35 @@ import io.flutter.plugin.common.MethodChannel.Result
 import java.lang.Exception
 
 /** KhaltiClientPlugin */
-class KhaltiClientPlugin : FlutterPlugin, MethodCallHandler {
+class KhaltiClientPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private lateinit var channel: MethodChannel
-    private lateinit var context: Activity
+    private lateinit var activity: Activity
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "khalti_client")
         channel.setMethodCallHandler(this)
+
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
+    }
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+            activity = binding.activity
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDetachedFromActivity() {
+        TODO("Not yet implemented")
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -71,8 +90,8 @@ class KhaltiClientPlugin : FlutterPlugin, MethodCallHandler {
                 .additionalData(product["customData"] as HashMap<String, Any>)
                 .productUrl(product["url"] as String)
 
-        val khaltiCheckout = KhaltiCheckOut(context, builder.build())
-        context.runOnUiThread {
+        val khaltiCheckout = KhaltiCheckOut(activity, builder.build())
+        activity.runOnUiThread {
             khaltiCheckout.show()
         }
     }

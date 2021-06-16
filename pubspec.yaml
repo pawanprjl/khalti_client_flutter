@@ -1,7 +1,7 @@
 name: khalti_client
 description: A plugin for implementing khalti client api in flutter.
 version: 0.0.1
-homepage:
+homepage: https://github.com/sanzaal/khalti_client_flutter
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
